@@ -97,8 +97,8 @@ In general, precision refers to the number of true positives out of all the posi
 
 Both metrics provide valuable insight for us. A high precision rate for tokens would infer that our model's classification of those tokens is good. In contrast, a high recall score would indicate that our model is good at detecting all tokens that are actually within the image. As seen in Figure 12, for the game board and the well, our model does a good job in both precision and recall metrics which is likely due to the unique shape of the tokens. Overall though, our model has a low precision metric and an average recall metric. Our model is able to do a decent job at picking up a majority of the tokens in the image, but doesn't have consistency with its classification.
 
-![A game board with pieces on it, viewed at an angle, and then the same image but viewed from above.](figures/orb_working.png)\
-**Figure 12.** An overhead test image (upper left), matching features (bottom), and transformed result (upper right).
+![A bar chart showing most Mean Average Precision values around 0.4 and most Recall values around 0.5. Some values are much higher than others.](figures/cocometrics.png)\
+**Figure 12.** COCO metrics across all game images.
 
 ## Accuracy
 To evaluate the complete model, we compared the grid of class predictions output by the model to the grid of actual objects present in the image. This leads to a simple accuracy metric: the number of spaces correctly identified divided by the total number of spaces (16).
