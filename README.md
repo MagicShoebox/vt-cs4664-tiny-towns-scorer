@@ -14,7 +14,7 @@ In the board game Tiny Towns, a player's score is determined by pieces arranged 
 
 # Data
 ## Collection
-Our dataset of images consists of Tiny Towns game boards, tokens, and game states taken by smartphones periodically during a game of Tiny Towns we played (Figure 2).
+Our dataset of images consists of Tiny Towns game boards, tokens, and game states taken by smartphones periodically during a game of Tiny Towns we played (Figure 2). The data can be downloaded [here](https://zenodo.org/record/7429657#.Y5d_np7MKUk).
 
 ![A table covered in cards, tokens, and game boards. A game of Tiny Towns is in progress.](figures/data_collection.jpg)\
 **Figure 2.** Experimental setup.
