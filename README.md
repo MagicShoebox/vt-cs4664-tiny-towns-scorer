@@ -1,5 +1,5 @@
 # Tiny Towns Scorer
-![Side-by-side images. On the left, a green board viewed at an angle, with several building-shaped tokens on it. On the right, the same board viewed from above with all the tokens labeled.](figures/teaser_image.png)
+![Side-by-side images. On the left, a green board viewed at an angle, with several building-shaped tokens on it. On the right, the same board viewed from above with all the tokens labeled.](figures/teaser_image.png)\
 **Figure 1.** A game state from the board game Tiny Towns alongside the recognized digital game state. Fourteen of the sixteen tokens were identified correctly.
 
 Computer Vision solution for scoring the board game Tiny Towns.
@@ -19,7 +19,7 @@ TBD - Maybe change this to just say Requires Colab or ability to run Jupypter No
 ## Collection
 Our dataset of images consists of Tiny Towns game boards, tokens, and game states taken by smartphones periodically during a game of Tiny Towns we played (Figure 2).
 
-![A table covered in cards, tokens, and game boards. A game of Tiny Towns is in progress.](figures/data_collection.jpg)
+![A table covered in cards, tokens, and game boards. A game of Tiny Towns is in progress.](figures/data_collection.jpg)\
 **Figure 2.** Experimental setup.
 
 ## Annotation and Class Imbalance
@@ -27,13 +27,13 @@ To label the data, we used the Computer Vision Annotation Tool (CVAT) [[3]](#ref
 
 Since our dataset consisted of only a single game of Tiny Towns, there were differences in the number of images collected for each type of token, leading to a class imbalance. For example, some pieces comprised as many as 10-12% of tokens, whereas others were as few as 2-4% (Figure 3).
 
-![A pie chart depicting the class breakdown of our dataset.](figures/data_breakdown.png)
+![A pie chart depicting the class breakdown of our dataset.](figures/data_breakdown.png)\
 **Figure 3.** Dataset class breakdown.
 
 ## Augmentation
 When training a neural network, a relatively small number of images in the dataset could lead to overfitting. To combat this, we used a preprocessing technique called data augmentation on the training dataset to create new images from existing ones (Figure 4).
 
-![A grid of photographs of game boards, with varying brightness, contrast, and color.](figures/data_augmentation.png)
+![A grid of photographs of game boards, with varying brightness, contrast, and color.](figures/data_augmentation.png)\
 **Figure 4.** Examples of data augmentation.
 
 # Experimentation
@@ -42,17 +42,17 @@ Before developing our final model, we experimented with other detection and clas
 ## Manual Corner Detection
 We manually selected the corners of the game board in a test image and used those 4 coordinates with the scikit-image transform module to perform homography. We saw good results with this method as can be seen in Figure 5, but manual selection is tedious.
 
-![Side-by-side images. On the left, a Tiny Towns game board on a table, viewed at an angle. On the right, the same board viewed from an overhead perspective.](figures/corner_detection.jpg)
+![Side-by-side images. On the left, a Tiny Towns game board on a table, viewed at an angle. On the right, the same board viewed from an overhead perspective.](figures/corner_detection.jpg)\
 **Figure 5.** An example of projective transformation using manual corner detection.
 
 ## Harris Corner Detection
 We attempted Harris Corner Detection to detect the four corners to apply the transformation above, but our observations and tests led to poor results. Instead of successfully finding corner points, our test image would result in looking glitched with a large mass of dots as seen in Figure 6.
 
-![A Tiny Towns game board with many purple dots on the right side.](figures/harris.png)
+![A Tiny Towns game board with many purple dots on the right side.](figures/harris.png)\
 **Figure 6.** The "corners" found on a test image after utilizing Harris Corner Detection.
 
 ## Hough Line Detection
-![Side-by-side images each containing black backgrounds with many red lines loosely arranged in a grid. The lower left is obscured by a jumble of disorganized lines.](figures/hough_line.png)
+![Side-by-side images each containing black backgrounds with many red lines loosely arranged in a grid. The lower left is obscured by a jumble of disorganized lines.](figures/hough_line.png)\
 **Figure 7.** The left half displays the lines found in a single board image; the right half displays the perpendicular and parallel lines found after analysis.
 
 Using Hough Line Detection and the knowledge that the game board is a 4x4 grid, we identified the lines most likely to be the 4x4 grid in an image from our data set. Continuing, we determine the subset of lines that are all parallel and perpendicular to each other and group them by similarity. However, the detected "grid" is still not perfect (Figure 7).
@@ -62,10 +62,10 @@ Our last experiment focused on interesting *features*, rather than continuing to
 
 For each feature in a query image (Figure 8), we use a brute force algorithm to find its two nearest neighbors in the test image, as measured by Hamming distance. We then filtered this list using Lowe's ratio test [[7]](#references), keeping only features whose distance to their 1st-nearest neighbor is less than 70% of the distance to their 2nd-nearest neighbor. These remaining "good" matches (keeping only the first neighbor) are then used to construct a projective transformation (Figure 9).
 
-![A Tiny Towns game board with lots of small green circles.](figures/board_features.png)
+![A Tiny Towns game board with lots of small green circles.](figures/board_features.png)\
 **Figure 8.** Features selected via ORB.
 
-![A game board with pieces on it, viewed at an angle, and then the same image but viewed from above.](figures/orb_working.png)
+![A game board with pieces on it, viewed at an angle, and then the same image but viewed from above.](figures/orb_working.png)\
 **Figure 9.** An overhead test image (upper left), matching features (bottom), and transformed result (upper right).
 
 # Final Model
@@ -79,7 +79,7 @@ We use KerasCV [[11]](#references) to implement and train the network. First, th
 ## Projective Transformation
 The trained neural network outputs bounding boxes, classes, and a confidence score for detected objects in the image. A visualized example can be seen in Figure 10.
 
-![A game board and pieces with many green boxes added to the image. Each box outlines a piece and is labeled with the name of the piece inside.](figures/detected_objects.png)
+![A game board and pieces with many green boxes added to the image. Each box outlines a piece and is labeled with the name of the piece inside.](figures/detected_objects.png)\
 **Figure 10.** Objects and their classes detected by the trained neural network. Some game pieces have been detected as multiple objects.
 
 The next part of the model identifies the detected bounding box for a game board with the highest confidence score. The model then slightly expands the box and extracts the corresponding region of the image.
@@ -89,7 +89,7 @@ Finally, the model uses OpenCV [[1]](#references) to perform ORB-based feature m
 ## Constructing the Grid
 Using homography, the center points of the remaining bounding boxes are transformed into the reference perspective. In this perspective, the points are easily partitioned into a 4x4 grid. Since the network may predict multiple objects within one tile on the grid, we select the object with the highest confidence score. This grid of classified objects is the final output of the model, visualized in Figure 1. A flowchart of the complete model can be seen in Figure 11.
 
-![A diagram consisting of several steps, starting with a raw image and producing an output grid.](figures/flowchart.png)
+![A diagram consisting of several steps, starting with a raw image and producing an output grid.](figures/flowchart.png)\
 **Figure 11.** Our final model for Tiny Towns Scorer.
 
 # Results
@@ -100,7 +100,7 @@ In general, precision refers to the number of true positives out of all the posi
 
 Both metrics provide valuable insight for us. A high precision rate for tokens would infer that our model's classification of those tokens is good. In contrast, a high recall score would indicate that our model is good at detecting all tokens that are actually within the image. As seen in Figure 12, for the game board and the well, our model does a good job in both precision and recall metrics which is likely due to the unique shape of the tokens. Overall though, our model has a low precision metric and an average recall metric. Our model is able to do a decent job at picking up a majority of the tokens in the image, but doesn't have consistency with its classification.
 
-![A game board with pieces on it, viewed at an angle, and then the same image but viewed from above.](figures/orb_working.png)
+![A game board with pieces on it, viewed at an angle, and then the same image but viewed from above.](figures/orb_working.png)\
 **Figure 12.** An overhead test image (upper left), matching features (bottom), and transformed result (upper right).
 
 ## Accuracy
