@@ -135,7 +135,7 @@ Finally, the RetinaNet architecture has some inherent drawbacks in its classific
 
 
 # TODO
-- [ ] Switch out homography for a better solution in transforming the predicted game state
+- [ ] Switch out ORB for a better solution to compute homography
 - [ ] Calculate the score through code
 
 # References
