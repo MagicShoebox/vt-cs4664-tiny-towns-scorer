@@ -2,18 +2,15 @@
 ![Side-by-side images. On the left, a green board viewed at an angle, with several building-shaped tokens on it. On the right, the same board viewed from above with all the tokens labeled.](figures/teaser_image.png)\
 **Figure 1.** A game state from the board game Tiny Towns alongside the recognized digital game state. Fourteen of the sixteen tokens were identified correctly.
 
-Computer Vision solution for scoring the board game Tiny Towns.
-
 In the board game Tiny Towns, a player's score is determined by pieces arranged into a 4x4 grid. We propose a model for calculating a player's score using computer vision. We combine object detection, feature matching, and homography in our model. We introduce the problem, detail initial experiments, and present a final model. Overall, the model achieves high accuracy on clear images, but poorly on images taken at distance or at oblique angles.
-
-# Installation
-TBD - Maybe change this to just say Requires Colab or ability to run Jupypter Notebooks?
 
 # Code structure
 - training.ipynb
-    - TBD fill out parts of training
-- evaluator.ipynb
-    - TBD fill out parts of evaluator
+    - Data loading, data augmentation, and training the model
+- scorer.ipynb
+    - Testing the model, forming the grid, and homography via ORB
+- experiments.ipynb
+    - Earlier tests/experiments from preliminary stages of the project
 
 # Data
 ## Collection
